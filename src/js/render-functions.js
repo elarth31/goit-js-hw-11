@@ -31,9 +31,9 @@ export function createMarkup(arr) {
         .join('');
 }
 
-export function showError(message) {
+export function displayErrorMessage(errorText) {
     iziToast.error({
         title: 'Error',
-        message: message,
+        message: errorText,
     });
 }

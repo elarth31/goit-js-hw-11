@@ -1,21 +1,26 @@
-const BASE_URL = 'https://pixabay.com/api/';
-const API_KEY = '46767628-a1a0fbec2a5b02d371c47f484';
+const API_ENDPOINT = 'https://pixabay.com/api/';
+const ACCESS_KEY = '46767628-a1a0fbec2a5b02d371c47f484';
 
-export async function fetchImages(query) {
+export async function fetchImages(searchTerm) {
     const searchParams = new URLSearchParams({
-        key: API_KEY,
-        q: query,
+        key: ACCESS_KEY,
+        q: searchTerm,
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
     });
 
-    const response = await fetch(`${BASE_URL}?${searchParams}`);
+    try {
+        const serverResponse = await fetch(`${API_ENDPOINT}?${searchParams}`);
+        console.log(serverResponse);
 
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (!serverResponse.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const responseData = await serverResponse.json();
+        return responseData.hits; 
+    } catch (error) {
+        console.error('Error fetching images:', error);
     }
-
-    const data = await response.json();
-    return data.hits; 
 }
